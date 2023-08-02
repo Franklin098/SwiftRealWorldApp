@@ -5,11 +5,15 @@
 //  Created by Franklin Velásquez on 31/07/23.
 //
 
-import Foundation
+import SwiftUI
 
 class AuthViewModel: ObservableObject {
     
     @Published var authUser: User?
+    
+    // key-value storage, automatically looks for a value and populates the variable
+    @AppStorage("userData") private var userData: Data?
+    
     @Published var isLoading: Bool = false
     
     
@@ -31,7 +35,13 @@ class AuthViewModel: ObservableObject {
                         
                     case .success(let loginResponse):
                         print("Login Success")
-                        self.authUser = loginResponse.user
+                        
+                        let data = try? JSONEncoder().encode(loginResponse.user)
+                        self.userData = data
+                        
+                        withAnimation {
+                            self.authUser = loginResponse.user
+                        }
                         
                     case .failure(let error):
                         print("Login ERROR, errorType: \(error)")
@@ -41,6 +51,32 @@ class AuthViewModel: ObservableObject {
             
         }
     
+    }
+    
+    func tryToRetrieveSavedUser(){
+        
+        guard let data = self.userData else {
+            return
+        }
+        
+        do{
+            
+            let user = try JSONDecoder().decode(User.self, from: data)
+            self.authUser = user
+
+        } catch {
+            print("Could not retrieve logged user")
+        }
+        
+    }
+    
+    func logOut() {
+        
+        withAnimation {
+            self.authUser = nil
+            self.userData = nil
+        }
+        
     }
     
     

@@ -7,18 +7,18 @@
 
 import Foundation
 
-struct LoginForm: Encodable {
+struct LoginForm: Codable {
     
     var email: String
     var password: String
 }
 
-struct LoginRequest: Encodable {
+struct LoginRequest: Codable {
     let user: LoginForm
 }
 
 
-struct User: Decodable {
+struct User: Codable {
     let email: String
     let token: String
     let username: String
@@ -26,6 +26,6 @@ struct User: Decodable {
     let image: String?
 }
 
-struct LoginResponse: Decodable {
+struct LoginResponse: Codable {
     let user: User
 }

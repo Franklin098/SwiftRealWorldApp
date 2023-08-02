@@ -12,13 +12,22 @@ struct MainNavigator: View {
     @EnvironmentObject var authVM: AuthViewModel
     
     var body: some View {
-        if authVM.authUser == nil {
-            UnAuthorizedNavigator()
-                .environmentObject(authVM)
-        } else {
-            UserProfileScreen()
-                .environmentObject(authVM)
+        
+        ZStack{
+            if authVM.authUser == nil {
+                UnAuthorizedNavigator()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .transition(.move(edge:.leading))
+                
+            } else {
+                AuthorizedNavigator()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                    .transition(.move(edge: .leading))
+            }
+        }.onAppear {
+            authVM.tryToRetrieveSavedUser()
         }
+        
     }
 }
 

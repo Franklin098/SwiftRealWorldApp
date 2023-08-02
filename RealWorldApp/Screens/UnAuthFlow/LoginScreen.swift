@@ -24,6 +24,8 @@ struct LoginScreen: View {
             TextField("Email", text: $loginVM.loginForm.email)
                 .modifier(AppTextFieldModifier(leftIconName: "mail"))
                 .padding(.bottom, 20)
+                .autocapitalization(.none)
+                .keyboardType(.emailAddress)
             
             SecureField("Password", text: $loginVM.loginForm.password)
                 .modifier(AppTextFieldModifier(leftIconName: "lock"))

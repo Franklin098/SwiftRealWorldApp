@@ -19,10 +19,17 @@ struct UserProfileScreen: View {
                 .padding(.bottom, 50)
             Text(authVM.authUser?.username ?? "")
             Text(authVM.authUser?.email ?? "")
+            
+            Button {
+                authVM.logOut()
+            } label: {
+                Text("Log Out")
+            }.padding(.top, 40)
+
         }
         
     }
-}
+} 
 
 struct UserProfileScreen_Previews: PreviewProvider {
     static var previews: some View {

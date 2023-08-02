@@ -24,6 +24,7 @@ final class ConduitService {
     
     static let baseURL = "https://api.realworld.io/api"
     static let loginEndpoint = baseURL + "/users/login"
+    static let articlesEndpoint = baseURL + "/articles"
     
     
     func getRequest<T: Decodable>(forResponseType: T.Type, endpointUrl: String, completed: @escaping(Result<T, AppNetworkError>) -> Void ) {
@@ -47,6 +48,8 @@ final class ConduitService {
             }
             
             guard let decodedResponseData = try? JSONDecoder().decode(T.self, from: data) else {
+                let json = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
+                print("data to decode: \(String(describing: json))")
                 return completed(.failure(.unableToDecodeResponseData))
             }
             
